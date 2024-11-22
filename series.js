@@ -37,27 +37,28 @@ function loadSeasons() {
     });
 }
 
+// Function to load episodes for a specific season
 function loadEpisodes(seasonIndex) {
     const episodesList = document.getElementById('episodes-list');
-    episodesList.innerHTML = ''; // Clear existing episodes
-
-    // Highlight the selected season button
-    const seasonButtons = document.querySelectorAll('#season-buttons button');
-    seasonButtons.forEach(btn => btn.classList.remove('active'));
-    seasonButtons[seasonIndex].classList.add('active');
+    episodesList.innerHTML = ''; // Clear current episodes
 
     const selectedSeason = seriesData.seasons[seasonIndex];
 
-    selectedSeason.episodes.forEach(episode => {
+    selectedSeason.episodes.forEach((episode, episodeIndex) => {
         const episodeElement = document.createElement('div');
         episodeElement.classList.add('episode');
 
-        // Episode Thumbnail
+        // Episode link
+        const episodeLink = document.createElement('a');
+        episodeLink.href = `episode.html?season=${seasonIndex + 1}&episode=${episodeIndex + 1}`; // Link to episode page with query parameters
+
+        // Episode thumbnail
         const thumbnail = document.createElement('img');
         thumbnail.src = episode.thumbnail;
         thumbnail.alt = episode.title;
+        thumbnail.classList.add('episode-thumbnail');
 
-        // Episode Info
+        // Episode details
         const episodeInfo = document.createElement('div');
         episodeInfo.classList.add('episode-info');
 
@@ -69,11 +70,15 @@ function loadEpisodes(seasonIndex) {
 
         episodeInfo.appendChild(title);
         episodeInfo.appendChild(description);
-        episodeElement.appendChild(thumbnail);
-        episodeElement.appendChild(episodeInfo);
+
+        // Append elements to link, then to episode element
+        episodeLink.appendChild(thumbnail);
+        episodeLink.appendChild(episodeInfo);
+        episodeElement.appendChild(episodeLink);
 
         episodesList.appendChild(episodeElement);
     });
 }
+
 
 
